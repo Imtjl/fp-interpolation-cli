@@ -11,11 +11,11 @@ defmodule InterpolationCli.Application do
     {:ok, self()}
   end
 
-  def start_link(frequency) do
+  def start_link(frequency, step) do
     # Запускаем супервизор
     children = [
       {InterpolationCli.InputHandler, []},
-      {InterpolationCli.LinearInterpolator, frequency},
+      {InterpolationCli.LinearInterpolator, frequency, step},
       {InterpolationCli.OutputHandler, []}
     ]
 

@@ -7,13 +7,17 @@ defmodule InterpolationCli.CLI do
   def main(args) do
     # Парсим аргументы командной строки
     {options, _, _} =
-      OptionParser.parse(args, switches: [frequency: :integer], aliases: [f: :frequency])
+      OptionParser.parse(args,
+        switches: [frequency: :integer, step: :float],
+        aliases: [f: :frequency, s: :step]
+      )
 
     # По умолчанию 10
     frequency = Keyword.get(options, :frequency, 10)
+    step = Keyword.get(options, :step, 1.0)
 
     # Запуск основного приложения
-    {:ok, _pid} = InterpolationCli.Application.start_link(frequency)
+    {:ok, _pid} = InterpolationCli.Application.start_link(frequency, step)
 
     # Читаем входные данные
     read_input()
