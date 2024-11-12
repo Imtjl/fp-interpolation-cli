@@ -117,12 +117,11 @@ Lagrange (from point 1.57 with step 1.0, covering all input X (12.57 < 12.57))
 Модель акторов используется в модулях `Application`, `InputHandler`,
 `LinearInterpolator`, `LagrangeInterpolator` и `OutputHandler`.
 
-- **Supervisor** - это процесс, управляющий другими процессами, называемымми
-  `дочерними`, определающий стратегию их перезапуска при сбоях. Например, модуль
-  `Application` создаёт и запускает `Supervisor` для ген серверов
-  **InputHandler**, **LinearInterpolator**, **LagrangeInterpolator** и
-  **OutputHandler** и определяет стратегию `one_for_one` - то есть, если
-  дочерний процесс упадёт, то он сразу же будет перезапущен, и только он.
+- **Supervisor** — центральный процесс, который управляет жизненным циклом
+  дочерних процессов (`InputHandler`, `LinearInterpolator`,
+  `LagrangeInterpolator` и `OutputHandler`). При сбоях `Supervisor`
+  перезапускает только те процессы, которые завершились аварийно, используя
+  стратегию `:one_for_one`.
 
 - **GenServer** - это абстракция Elixir для реализации акторов. Это процесс,
   хранящий состояние и обрабатывающий запросы. По принципу своей работы это
@@ -180,6 +179,70 @@ Lagrange (from point 1.57 with step 1.0, covering all input X (12.57 < 12.57))
 | Приём интерполированных данных       |
 | Форматирование и вывод результатов   |
 +--------------------------------------+
+```
+
+## Интерполяция
+
+В моей программе реализованы два метода интерполяции: линейная и интерполяция с
+помощью полинома Лагранжа. Оба метода выражены в виде математических формул и
+реализованы на Elixir.
+
+### Линейная интерполяция
+
+Линейная интерполяция между двумя точками `(x_1, y_1)` и `(x_2, y_2)` выражается
+как:
+
+$$
+y = y_1 + \frac{{y_2 - y_1}}{{x_2 - x_1}} \cdot (x - x_1)
+$$
+
+В Elixir реализация разбивает отрезок между двумя точками на заданные промежутки
+с шагом `step`, а затем вычисляет значения по формуле для каждого промежуточного
+`x`:
+
+```elixir
+def perform_linear_interpolation([{x1, y1}, {x2, y2}], step) do
+  xs = Stream.iterate(x1, &(&1 + step)) |> Enum.take_while(&(&1 <= x2))
+  ys = Enum.map(xs, fn x -> y1 + (y2 - y1) / (x2 - x1) * (x - x1) end)
+  Enum.zip(xs, ys)
+end
+```
+
+### Интерполяция полиномом Лагранжа
+
+Интерполяция полиномом Лагранжа для набора точек
+$(x_0, y_0), (x_1, y_1), \dots, (x_n, y_n)$ вычисляется с помощью полинома
+степени \( n \):
+
+$$
+L(x) = \sum_{i=0}^{n} y_i \cdot l_i(x)
+$$
+
+где $l_i(x)$ — базисный полином, определяемый как:
+
+$$
+l_i(x) = \prod_{\substack{0 \leq j \leq n \\ j \neq i}} \frac{{x - x_j}}{{x_i - x_j}}
+$$
+
+Реализация на Elixir строит этот полином, используя функции для вычисления
+значений каждого базисного полинома `l_i(x)`:
+
+```elixir
+def lagrange_value(points, x) do
+  Enum.reduce(points, 0.0, fn {x_i, y_i}, acc ->
+    acc + y_i * basis_polynomial(points, x, x_i)
+  end)
+end
+
+defp basis_polynomial(points, x, x_i) do
+  Enum.reduce(points, 1.0, fn {x_j, _}, prod ->
+    if x_i != x_j do
+      prod * (x - x_j) / (x_i - x_j)
+    else
+      prod
+    end
+  end)
+end
 ```
 
 <a id="end"></a>
