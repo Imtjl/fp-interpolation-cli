@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            target: x86_64-apple-darwin
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3 # Updated to v3 for compatibility
+
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1.5.0 # Updated to latest version
+        with:
+          elixir-version: '1.15.7'
+          otp-version: '26.0'
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compile code
+        run: mix compile
+
+      - name: Run release build
+        env:
+          MIX_ENV: prod
+        run: mix release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4 # Updated to v4 for compatibility
+        with:
+          name: interpolation_cli-${{ matrix.os }}
+          path: _build/prod/rel/interpolation_cli
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: interpolation_cli-${{ matrix.os }}
+          path: release
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
