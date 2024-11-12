@@ -1,14 +1,14 @@
 defmodule InterpolationCli.LinearInterpolator do
   @moduledoc """
-  Module for linear interpolation. Receives a window of points from InputHandler and
-  computes intermediate values with a given sampling frequency and step, then sends results to OutputHandler.
+  Module for linear interpolation. Receives a window of points and computes
+  intermediate values with a given sampling frequency and step.
   """
 
   use GenServer
 
   # API
-  def start_link([frequency, step]) do
-    GenServer.start_link(__MODULE__, {frequency, step}, name: __MODULE__)
+  def start_link(step) do
+    GenServer.start_link(__MODULE__, step, name: __MODULE__)
   end
 
   def interpolate(points) do
@@ -19,6 +19,7 @@ defmodule InterpolationCli.LinearInterpolator do
     GenServer.call(__MODULE__, {:interpolate_sync, points})
   end
 
+  # Linear interpolation
   def perform_linear_interpolation(points, step) do
     [{x1, y1}, {x2, y2}] = points
 
@@ -35,21 +36,21 @@ defmodule InterpolationCli.LinearInterpolator do
 
   # Callbacks
   @impl true
-  def init({frequency, step}) do
-    {:ok, %{frequency: frequency, step: step}}
+  def init(step) do
+    {:ok, step}
   end
 
   @impl true
-  def handle_cast({:interpolate, points}, state) do
-    {descr, res} = perform_linear_interpolation(points, state.step)
+  def handle_cast({:interpolate, points}, step) do
+    {descr, res} = perform_linear_interpolation(points, step)
     InterpolationCli.OutputHandler.output(descr, res)
-    {:noreply, state}
+    {:noreply, step}
   end
 
   @impl true
-  def handle_call({:interpolate_sync, points}, _from, state) do
-    {descr, res} = perform_linear_interpolation(points, state.step)
+  def handle_call({:interpolate_sync, points}, _from, step) do
+    {descr, res} = perform_linear_interpolation(points, step)
     InterpolationCli.OutputHandler.output_sync(descr, res)
-    {:reply, :ok, state}
+    {:reply, :ok, step}
   end
 end

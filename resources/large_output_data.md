@@ -1,106 +1,32 @@
+Input processing finished.
 
-Linear (going from point 0.0 with step 1.0, covering all input X (0.1 < 1.0)):
-0.0	1.0
-0.0	1.0
-
-
-Linear (going from point 0.1 with step 1.0, covering all input X (0.2 < 1.1)):
-0.1	1.1
-0.1	1.09
+Lagrange (from point 0.0 with step 1.0, covering all input X (4.71 < 5.0)):
+0.0	1.0	2.0	3.0	4.0	5.0
+0.0	0.97	0.84	0.12	-0.67	-1.03
 
 
-Linear (going from point 0.2 with step 1.0, covering all input X (0.3 < 1.2)):
-0.2	1.2
-0.2	1.17
+Lagrange (from point 1.57 with step 1.0, covering all input X (12.57 < 12.57)):
+1.57	2.57	3.57	4.57	5.57	6.57	7.57	8.57	9.57	10.57	11.57	12.57
+1.0	0.37	-0.28	-0.91	-1.49	-1.95	-2.26	-2.38	-2.25	-1.84	-1.11	0.0
 
 
-Linear (going from point 0.3 with step 1.0, covering all input X (0.4 < 1.3)):
-0.3	1.3
-0.3	1.23
+Linear (going from point 0.0 with step 1.0, covering all input X (1.57 < 2.0)):
+0.0	1.0	2.0
+0.0	0.64	1.27
 
 
-Linear (going from point 0.4 with step 1.0, covering all input X (0.5 < 1.4)):
-0.4	1.4
-0.39	1.29
+Linear (going from point 1.57 with step 1.0, covering all input X (3.14 < 3.57)):
+1.57	2.57	3.57
+1.0	0.36	-0.27
 
 
-Linear (going from point 0.5 with step 1.0, covering all input X (0.6 < 1.5)):
-0.5	1.5
-0.48	1.33
+Linear (going from point 3.14 with step 1.0, covering all input X (4.71 < 5.14)):
+3.14	4.14	5.14
+0.0	-0.64	-1.27
 
 
-Linear (going from point 0.6 with step 1.0, covering all input X (0.7 < 1.6)):
-0.6	1.6
-0.57	1.36
+Linear (going from point 4.71 with step 1.0, covering all input X (12.57 < 12.71)):
+4.71	5.71	6.71	7.71	8.71	9.71	10.71	11.71	12.71
+-1.0	-0.87	-0.75	-0.62	-0.49	-0.36	-0.24	-0.11	0.02
 
-
-Linear (going from point 0.7 with step 1.0, covering all input X (0.8 < 1.7)):
-0.7	1.7
-0.65	1.38
-
-
-Linear (going from point 0.8 with step 1.0, covering all input X (0.9 < 1.8)):
-0.8	1.8
-0.72	1.38
-
-
-Linear (going from point 0.9 with step 1.0, covering all input X (1.0 < 1.9)):
-0.9	1.9
-0.78	1.36
-
-
-Linear (going from point 1.0 with step 1.0, covering all input X (1.1 < 2.0)):
-1.0	2.0
-0.84	1.34
-
-
-Linear (going from point 1.1 with step 1.0, covering all input X (1.2 < 2.1)):
-1.1	2.1
-0.89	1.3
-
-
-Linear (going from point 1.2 with step 1.0, covering all input X (1.3 < 2.2)):
-1.2	2.2
-0.93	1.25
-
-
-Linear (going from point 1.3 with step 1.0, covering all input X (1.4 < 2.3)):
-1.3	2.3
-0.96	1.18
-
-
-Linear (going from point 1.4 with step 1.0, covering all input X (1.5 < 2.4)):
-1.4	2.4
-0.99	1.1
-
-
-Linear (going from point 1.5 with step 1.0, covering all input X (1.6 < 2.5)):
-1.5	2.5
-1.0	1.02
-
-
-Linear (going from point 1.6 with step 1.0, covering all input X (1.7 < 2.6)):
-1.6	2.6
-1.0	0.92
-
-
-Linear (going from point 1.7 with step 1.0, covering all input X (1.8 < 2.7)):
-1.7	2.7
-0.99	0.81
-
-
-Linear (going from point 1.8 with step 1.0, covering all input X (1.9 < 2.8)):
-1.8	2.8
-0.97	0.69
-
-
-Linear (going from point 1.9 with step 1.0, covering all input X (2.0 < 2.9)):
-1.9	2.9
-0.95	0.57
-
-
-Linear (going from point 2.0 with step 1.0, covering all input X (2.1 < 3.0)):
-2.0	3.0
-0.91	0.44
-
-
+Timeout waiting for processes to complete.
