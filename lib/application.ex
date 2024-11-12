@@ -15,7 +15,7 @@ defmodule InterpolationCli.Application do
     # Запускаем супервизор
     children = [
       {InterpolationCli.InputHandler, []},
-      {InterpolationCli.LinearInterpolator, frequency, step},
+      {InterpolationCli.LinearInterpolator, [frequency, step]},
       {InterpolationCli.OutputHandler, []}
     ]
 

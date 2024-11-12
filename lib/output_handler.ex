@@ -1,7 +1,7 @@
 defmodule InterpolationCli.OutputHandler do
   @moduledoc """
-  Модуль для обработки вывода. Принимает результаты интерполяции и выводит их
-  на стандартный вывод в заданном формате.
+  Module for processing output. 
+  Takes interpolation results and outputs it to starndard output in a specific format.
   """
 
   use GenServer
@@ -39,7 +39,7 @@ defmodule InterpolationCli.OutputHandler do
 
   def print_output(descr, res) do
     IO.puts("")
-    IO.puts(descr)
+    IO.write(descr)
 
     xs = Enum.map_join(res, "\t", fn {x, _} -> Float.round(to_float(x), 2) end)
     ys = Enum.map_join(res, "\t", fn {_, y} -> Float.round(to_float(y), 2) end)

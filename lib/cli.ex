@@ -1,25 +1,20 @@
 defmodule InterpolationCli.CLI do
   @moduledoc """
-  Модуль CLI, который обрабатывает аргументы командной строки, инициализирует приложение
-  и принимает данные с ввода, передавая их в InputHandler для дальнейшей обработки.
+  CLI module, which handles command line args, inits the application, and listens for data from stdin, forwarding them to InputHandle.
   """
 
   def main(args) do
-    # Парсим аргументы командной строки
     {options, _, _} =
       OptionParser.parse(args,
         switches: [frequency: :integer, step: :float],
         aliases: [f: :frequency, s: :step]
       )
 
-    # По умолчанию 10
     frequency = Keyword.get(options, :frequency, 10)
     step = Keyword.get(options, :step, 1.0)
 
-    # Запуск основного приложения
     {:ok, _pid} = InterpolationCli.Application.start_link(frequency, step)
 
-    # Читаем входные данные
     read_input()
   end
 
@@ -31,11 +26,11 @@ defmodule InterpolationCli.CLI do
         :ok
 
       {:error, reason} ->
-        IO.puts("Ошибка чтения ввода: #{reason}")
+        IO.puts("Error reading input: #{reason}")
 
       data ->
         String.trim(data)
-        |> String.split()
+        |> String.split(~r/\s+/)
         |> parse_line()
 
         read_input()
@@ -45,11 +40,10 @@ defmodule InterpolationCli.CLI do
   defp parse_line([x_str, y_str]) do
     case {Float.parse(x_str), Float.parse(y_str)} do
       {{x, ""}, {y, ""}} ->
-        # Отправляем данные обработчику входа
         InterpolationCli.InputHandler.add_point(x, y)
 
       _ ->
-        IO.puts("Неверный формат ввода. Ожидается: x y")
+        IO.puts("Invalid input format. Expected: x y")
     end
   end
 

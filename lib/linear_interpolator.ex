@@ -26,11 +26,8 @@ defmodule InterpolationCli.LinearInterpolator do
     ys = Enum.map(xs, fn x -> y1 + (y2 - y1) / (x2 - x1) * (x - x1) end)
     res = Enum.zip(xs, ys)
 
-    range_start = if is_integer(x1), do: x1 * 1.0, else: x1
-    range_end = if is_integer(x2 + step), do: (x2 + step) * 1.0, else: x2 + step
-
     descr = """
-    Линейная (идем от точки #{Float.round(range_start, 2)} с шагом #{step}, покрывая все введенные X (#{Float.round(range_end, 2)} < #{Float.round(x2, 2)})):
+    Linear (going from point #{Float.round(x1, 2)} with step #{step}, covering all input X (#{Float.round(x2, 2)} < #{Float.round(List.last(xs), 2)})):
     """
 
     {descr, res}
