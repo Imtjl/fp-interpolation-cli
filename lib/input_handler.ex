@@ -25,11 +25,10 @@ defmodule InterpolationCli.InputHandler do
   def handle_cast({:add_point, point}, state) do
     new_state = [point | state] |> Enum.sort_by(fn {x, _y} -> x end)
 
-    # Проверяем, есть ли достаточно точек для интерполяции
+    # Передаём последние две точки для интерполяции
     if length(new_state) >= 2 do
-      # Отправляем последние две точки для линейной интерполяции
-      [p1, p2 | _] = new_state
-      InterpolationCli.LinearInterpolator.interpolate([p1, p2])
+      last_two_points = Enum.take(new_state, -2)
+      InterpolationCli.LinearInterpolator.interpolate(last_two_points)
     end
 
     {:noreply, new_state}

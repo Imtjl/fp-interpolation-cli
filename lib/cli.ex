@@ -20,6 +20,8 @@ defmodule InterpolationCli.CLI do
   end
 
   defp read_input do
+    # IO.write("> ")
+
     case IO.gets("") do
       :eof ->
         :ok

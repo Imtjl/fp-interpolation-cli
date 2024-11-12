@@ -23,9 +23,13 @@ defmodule InterpolationCli.OutputHandler do
 
   @impl true
   def handle_cast({:output, results}, state) do
-    Enum.each(results, fn {x, y} ->
-      IO.puts("#{Float.round(x, 3)}\t#{Float.round(y, 3)}")
-    end)
+    xs = Enum.map_join(results, "\t", fn {x, _} -> Float.round(x, 2) end)
+    ys = Enum.map_join(results, "\t", fn {_, y} -> Float.round(y, 2) end)
+
+    # Вывод X и Y координат
+    IO.puts(xs)
+    IO.puts(ys)
+    IO.puts("")
 
     {:noreply, state}
   end
