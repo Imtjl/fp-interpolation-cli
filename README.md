@@ -46,6 +46,49 @@
 
 ---
 
+<a id="usage"></a>
+
+## Использование
+
+### Потоковый режим
+
+> Шаг дискретизации `s` - step
+
+```bash
+╭─boris at fedora in ⌁/dev/functional-programming-course/fp-lab3 (main↑1 ●2✚4…5)
+╰─λ cat ./resources/large_input_data.csv | ./interpolation_cli -s 1.0 > ./resour
+ces/large_output_data.md
+```
+
+### Ручной ввод
+
+> Шаг дискретизации `s` - step
+
+```bash
+╭─boris at fedora in ⌁/dev/functional-programming-course/fp-lab3 (main↑1 ●2✚4…6)
+╰─λ ./interpolation_cli -s 1.0                             0 (0.409s) < 15:31:52
+0 0
+1.571 1
+
+Linear (going from point 0.0 with step 1.0, covering all input X (1.57 < 2.0)):
+0.0     1.0     2.0
+0.0     0.64    1.27
+
+3.142 0
+
+Linear (going from point 1.57 with step 1.0, covering all input X (3.14 < 3.57))
+:
+1.57    2.57    3.57
+1.0     0.36    -0.27
+
+4.712 -1
+
+Linear (going from point 3.14 with step 1.0, covering all input X (4.71 < 5.14))
+:
+3.14    4.14    5.14
+0.0     -0.64   -1.27
+```
+
 <a id="arch"></a>
 
 ## Архитектура
@@ -94,15 +137,15 @@
 | (GenServer)                          |
 | Приём данных и сортировка            |
 | Хранение входных точек               |
-| Передача точек в LinearInterpolator  |
+| Передача точек в интерполяторы       |
 +--------------------------------------+
                     |
                     v
 +--------------------------------------+
-|        LinearInterpolator            |
+|      Linear/Lagrange Interpolator    |
 |--------------------------------------|
 | (GenServer)                          |
-| Линейная интерполяция                |
+| Линейная / полином Лагранжа          |
 | Получение точек от InputHandler      |
 | Генерация промежуточных точек        |
 | Передача результатов в OutputHandler |
